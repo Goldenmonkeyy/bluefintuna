@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 
@@ -17,6 +16,7 @@ echo "The middware is $Midware."
 echo "-------------------------------------------------------------------------"
 
 
+
 #is the user root?
 if [ $(whoami) == root ]; then 
         echo "Sorry, must run under root!"
@@ -33,12 +33,12 @@ echo "The local ip address is: $iplocal"
 datenow=$(date +"%Y-%m-%d")
 echo "System date is: $datenow"
 
-
 #1. webshell lookup module:
 
-#find webapps folder
+
+#find possible webapps folder
 echo "Possible webapps root folders are: "
-timeout 20 bash -c 'find / -type d -name "*tomcat" 2>/dev/null' 
+timeout 20 bash -c 'find / -type d \( -name "*tomcat" -o -name "*weblogic*"\) 2>/dev/null'
 
 #start of finding webshell files
 if [ -z "$ShellName" ]
@@ -49,4 +49,10 @@ else
       echo "the path of shellname are: "
       timeout 40 bash -c 'find / -type f -name "$ShellName" 2>/dev/null'
 fi
-#function of find suspect
+
+#2. suspect file lookupp
+echo "The following files look suspicious: "
+timeout 40 bash -c 'find / -type f \(-name "*portmap*"-o -name "tunnel.jsp" -o -name "suo5.jsp" -o -name "*fscan*" -o -name "*unicornscan*" -o -name "conn.jsp"\) 2>/dev/null'
+
+
+#3.
