@@ -1,7 +1,8 @@
+
 #!/bin/bash
 
 
-#Get input value1
+#Get input values
 read -p "Please input backend language, java or php: " Lang
 echo "Backend language is $Lang."
 echo "-------------------------------------------------------------------------"
@@ -20,25 +21,34 @@ echo "-------------------------------------------------------------------------"
 
 #is the user root?
 if [ $(whoami) == root ]; then 
-	echo "must run under root!"
-	exit 0
+        echo "Sorry, must run under root!"
+        exit 0
 fi
 
 #info gathering
+
 #ip address
+iplocal=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
 
-iplocal = $(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
-
-echo $iplocal
+echo "The local ip address is: $iplocal"
 #system date
-datenow = $( grep "$(date +"%Y-%m-%d")")
+datenow=$(date +"%Y-%m-%d")
+echo "System date is: $datenow"
 
-#webapps folder
-#midware log folder
+#webshell lookup module:
 
+
+#find webapps folder
+echo "Possible webapps root folders are: "
+timeout 20 bash -c 'find / -type d -name "*tomcat" 2>/dev/null' 
 
 #start of finding files
-#test
-
-#function of find suspect 
-
+if [ -z "$ShellName" ]
+then
+      echo "Possible webshells are:"
+      timeout 40 bash -c 'find / -type f -name "*.jsp" 2>/dev/null'
+else
+      echo "the path of shellname are: "
+      timeout 40 bash -c 'find / -type f -name "$ShellName" 2>/dev/null'
+fi
+#function of find suspect
