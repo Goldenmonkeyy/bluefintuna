@@ -16,8 +16,6 @@ read -p "What's the middleware, tomcat, weblogic or ngnix: " Midware
 echo "The middware is $Midware."
 echo "-------------------------------------------------------------------------"
 
-#[[ $(/usr/local/bin/monit --version) != *5.5* ]]
-
 
 #is the user root?
 if [ $(whoami) == root ]; then 
@@ -29,20 +27,20 @@ fi
 
 #ip address
 iplocal=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
-
 echo "The local ip address is: $iplocal"
+
 #system date
 datenow=$(date +"%Y-%m-%d")
 echo "System date is: $datenow"
 
-#webshell lookup module:
 
+#1. webshell lookup module:
 
 #find webapps folder
 echo "Possible webapps root folders are: "
 timeout 20 bash -c 'find / -type d -name "*tomcat" 2>/dev/null' 
 
-#start of finding files
+#start of finding webshell files
 if [ -z "$ShellName" ]
 then
       echo "Possible webshells are:"
